@@ -16,7 +16,11 @@ namespace caffe {
 
 template <typename Dtype>
 AnnotatedDataLayer<Dtype>::AnnotatedDataLayer(const LayerParameter& param)
-  : BasePrefetchingDataLayer<Dtype>(param) {
+  : BasePrefetchingDataLayer<Dtype>(param),
+    offset_() {
+    db_.reset(db::GetDB(param.data_param().backend()));
+    db_->Open(param.data_param().source(), db::READ);
+    cursor_.reset(db_->NewCursor());
 }
 
 template <typename Dtype>
@@ -167,6 +171,7 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
   // Store transformed annotation.
   map<int, vector<AnnotationGroup> > all_anno;
   int num_bboxes = 0;
+  //AnnotatedDatum anno_datum;
 
   for (int item_id = 0; item_id < batch_size; ++item_id) {
     timer.Start();
@@ -174,7 +179,6 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
       Next();
     }
     // get a anno_datum
-    AnnotatedDatum anno_datum;
     anno_datum.ParseFromString(cursor_->value());
     read_time += timer.MicroSeconds();
     timer.Start();
@@ -286,6 +290,8 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
 
     //reader_.free().push(const_cast<AnnotatedDatum*>(&anno_datum));
   }
+  // clear memory
+  //delete *anno_datum;
 
   // Store "rich" annotation if needed.
   if (this->output_labels_ && has_anno_type_) {
