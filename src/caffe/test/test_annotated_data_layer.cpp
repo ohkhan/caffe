@@ -180,9 +180,6 @@ class AnnotatedDataLayerTest : public MultiDeviceTest<TypeParam> {
       for (int i = 0; i < num_; ++i) {
         if (use_rich_annotation_) {
           if (type_ == AnnotatedDatum_AnnotationType_BBOX) {
-            std::cout << blob_top_label_ << std::endl;
-            std::cout << num_ << std::endl;
-            std::cout << BBoxNum(num_) << std::endl;
             EXPECT_EQ(blob_top_label_->num(), 1);
             EXPECT_EQ(blob_top_label_->channels(), 1);
             EXPECT_EQ(blob_top_label_->height(), BBoxNum(num_));
@@ -582,7 +579,6 @@ TYPED_TEST(AnnotatedDataLayerTest, TestReadLevelDB) {
         this->Fill(DataParameter_DB_LEVELDB, unique_pixel, unique_annotation,
                    use_rich_annotation, type);
         this->TestRead();
-        // asdfasdf
       }
     }
   }

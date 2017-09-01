@@ -50,10 +50,9 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
   }
 
   // Read a data point, and use it to initialize the top blob.
-  // Reuse this object later when reading rest of data
+  // Reuse this object later when reading data
   AnnotatedDatum anno_datum;
   anno_datum.ParseFromString(cursor_->value());
-  //AnnotatedDatum& anno_datum = *(reader_.full().peek());
 
   // Use data_transformer to infer the expected blob shape from anno_datum.
   vector<int> top_shape =
@@ -72,7 +71,6 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
   if (this->output_labels_) {
     has_anno_type_ = anno_datum.has_type() || anno_data_param.has_anno_type();
     vector<int> label_shape(4, 1);
-//    std::cout << label_shape[0] << ',' << label_shape[1] << ',' << label_shape[2] << ',' << label_shape[3] << ',' << std::endl;
     if (has_anno_type_) {
       anno_type_ = anno_datum.type();
       if (anno_data_param.has_anno_type()) {
@@ -107,7 +105,6 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
     } else {
       label_shape[0] = batch_size;
     }
-//    std::cout << label_shape[0] << ',' << label_shape[1] << ',' << label_shape[2] << ',' << label_shape[3] << ',' << std::endl;
     top[1]->Reshape(label_shape);
     for (int i = 0; i < this->prefetch_.size(); ++i) {
       this->prefetch_[i]->label_.Reshape(label_shape);
@@ -174,8 +171,6 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
   // Store transformed annotation.
   map<int, vector<AnnotationGroup> > all_anno;
   int num_bboxes = 0;
-  //AnnotatedDatum anno_datum;
-
   for (int item_id = 0; item_id < batch_size; ++item_id) {
     timer.Start();
     while (Skip()) {
@@ -290,11 +285,8 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
       delete expand_datum;
     }
     trans_time += timer.MicroSeconds();
-
-    //reader_.free().push(const_cast<AnnotatedDatum*>(&anno_datum));
+    Next();
   }
-  // clear memory
-  //delete *anno_datum;
 
   // Store "rich" annotation if needed.
   if (this->output_labels_ && has_anno_type_) {
