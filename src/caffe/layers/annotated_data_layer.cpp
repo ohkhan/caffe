@@ -151,7 +151,6 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
       this->layer_param_.annotated_data_param();
   const TransformationParameter& transform_param =
     this->layer_param_.transform_param();
-  //AnnotatedDatum& anno_datum = *(reader_.full().peek());
   AnnotatedDatum anno_datum;
   anno_datum.ParseFromString(cursor_->value());
   // Use data_transformer to infer the expected blob shape from anno_datum.
@@ -171,6 +170,7 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
   // Store transformed annotation.
   map<int, vector<AnnotationGroup> > all_anno;
   int num_bboxes = 0;
+
   for (int item_id = 0; item_id < batch_size; ++item_id) {
     timer.Start();
     while (Skip()) {
