@@ -50,6 +50,7 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
   }
 
   // Read a data point, and use it to initialize the top blob.
+  // Reuse this object later when reading rest of data
   AnnotatedDatum anno_datum;
   anno_datum.ParseFromString(cursor_->value());
   //AnnotatedDatum& anno_datum = *(reader_.full().peek());
@@ -71,6 +72,7 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
   if (this->output_labels_) {
     has_anno_type_ = anno_datum.has_type() || anno_data_param.has_anno_type();
     vector<int> label_shape(4, 1);
+//    std::cout << label_shape[0] << ',' << label_shape[1] << ',' << label_shape[2] << ',' << label_shape[3] << ',' << std::endl;
     if (has_anno_type_) {
       anno_type_ = anno_datum.type();
       if (anno_data_param.has_anno_type()) {
@@ -105,6 +107,7 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
     } else {
       label_shape[0] = batch_size;
     }
+//    std::cout << label_shape[0] << ',' << label_shape[1] << ',' << label_shape[2] << ',' << label_shape[3] << ',' << std::endl;
     top[1]->Reshape(label_shape);
     for (int i = 0; i < this->prefetch_.size(); ++i) {
       this->prefetch_[i]->label_.Reshape(label_shape);
