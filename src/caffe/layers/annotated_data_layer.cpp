@@ -50,7 +50,7 @@ void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
   }
 
   // Read a data point, and use it to initialize the top blob.
-  // Reuse this object later when reading data
+  // Reuse anno_datum later when reading data
   AnnotatedDatum anno_datum;
   anno_datum.ParseFromString(cursor_->value());
 
@@ -313,6 +313,9 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
             for (int a = 0; a < anno_group.annotation_size(); ++a) {
               const Annotation& anno = anno_group.annotation(a);
               const NormalizedBBox& bbox = anno.bbox();
+
+//              int idxx = idx;
+
               top_label[idx++] = item_id;
               top_label[idx++] = anno_group.group_label();
               top_label[idx++] = anno.instance_id();
@@ -321,6 +324,12 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
               top_label[idx++] = bbox.xmax();
               top_label[idx++] = bbox.ymax();
               top_label[idx++] = bbox.difficult();
+
+//              for (int j = 0; j < 8; ++j) {
+//                std::cout << top_label[idxx+j] << ' ';
+//              }
+//              std::cout << std::endl;
+
             }
           }
         }

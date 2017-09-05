@@ -392,6 +392,7 @@ TYPED_TEST(MultiBoxLossLayerTest, TestLocGradient) {
                 multibox_loss_param->set_use_prior_for_matching(use_prior);
                 multibox_loss_param->set_use_difficult_gt(use_difficult_gt);
                 multibox_loss_param->set_mining_type(mining_type);
+                std::cout << "CHECK PARAMS: " << loc_loss_type << ", " << share_location << ", " << match_type << ", " << use_prior << ", " << use_difficult_gt << ", " << mining_type << std::endl;
                 MultiBoxLossLayer<Dtype> layer(layer_param);
                 GradientChecker<Dtype> checker(1e-2, 1e-2, 1701);
                 checker.CheckGradientExhaustive(&layer, this->blob_bottom_vec_,

@@ -1063,10 +1063,12 @@ void GetGroundTruth(const Dtype* gt_data, const int num_gt,
       continue;
     }
     int label = gt_data[start_idx + 1];
-    for (int j = 0; j < 8; ++j) {
-      std::cout << gt_data[start_idx+j] << ' ';
-    }
-    std::cout << std::endl;
+//    std::cout << "current gt num: " << i << std::endl;
+//    for (int j = 0; j < 8; ++j) {
+//      std::cout << gt_data[start_idx+j] << ' ';
+//    }
+//    std::cout << std::endl;
+
     CHECK_NE(background_label_id, label)
         << "Found background label in the dataset.";
     bool difficult = static_cast<bool>(gt_data[start_idx + 7]);
