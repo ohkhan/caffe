@@ -194,7 +194,6 @@ class MultiBoxLossLayerTest : public MultiDeviceTest<TypeParam> {
     FillItem(gt_data + 8 * 2, "2 2 0 0.2 0.2 0.4 0.4 0");
     FillItem(gt_data + 8 * 3, "2 2 1 0.6 0.6 0.8 0.9 1");
 #endif  // USE_LMDB
-
     // Fake layer
     PoolingParameter* pooling_param = layer_param.mutable_pooling_param();
     pooling_param->set_pool(PoolingParameter_PoolMethod_AVE);
@@ -308,6 +307,13 @@ class MultiBoxLossLayerTest : public MultiDeviceTest<TypeParam> {
 
     delete fake_blob;
     delete fake_input;
+    std::cout << "inside fill" << std::endl;
+    for (int k = 0; k < 4; ++k) {
+      for (int i = 0; i < 8; ++i) {
+        std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+      }
+      std::cout << std::endl;
+    }
   }
   int num_;
   int num_classes_;
@@ -370,7 +376,21 @@ TYPED_TEST(MultiBoxLossLayerTest, TestLocGradient) {
     MultiBoxLossParameter_LocLossType loc_loss_type = kLocLossTypes[l];
     for (int i = 0; i < 2; ++i) {
       bool share_location = kBoolChoices[i];
+      std::cout << "before fill" << std::endl;
+      for (int k = 0; k < 4; ++k) {
+        for (int i = 0; i < 8; ++i) {
+          std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+        }
+        std::cout << std::endl;
+      }
       this->Fill(share_location);
+      std::cout << "after fill" << std::endl;
+      for (int k = 0; k < 4; ++k) {
+        for (int i = 0; i < 8; ++i) {
+          std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+        }
+        std::cout << std::endl;
+      }
       for (int j = 0; j < 2; ++j) {
         MultiBoxLossParameter_MatchType match_type = kMatchTypes[j];
         for (int k = 0; k < 1; ++k) {
@@ -392,7 +412,7 @@ TYPED_TEST(MultiBoxLossLayerTest, TestLocGradient) {
                 multibox_loss_param->set_use_prior_for_matching(use_prior);
                 multibox_loss_param->set_use_difficult_gt(use_difficult_gt);
                 multibox_loss_param->set_mining_type(mining_type);
-                std::cout << "CHECK PARAMS: " << loc_loss_type << ", " << share_location << ", " << match_type << ", " << use_prior << ", " << use_difficult_gt << ", " << mining_type << std::endl;
+//                std::cout << "CHECK PARAMS: " << "loc_loss_type: " << loc_loss_type << ", share_location: " << share_location << ", match_type: " << match_type << ", use_prior: " << use_prior << ", use_difficult_gt: " << use_difficult_gt << ", mining_type: " << mining_type << std::endl;
                 MultiBoxLossLayer<Dtype> layer(layer_param);
                 GradientChecker<Dtype> checker(1e-2, 1e-2, 1701);
                 checker.CheckGradientExhaustive(&layer, this->blob_bottom_vec_,
@@ -442,6 +462,7 @@ TYPED_TEST(MultiBoxLossLayerTest, TestConfGradient) {
                 multibox_loss_param->set_use_difficult_gt(use_difficult_gt);
                 multibox_loss_param->set_background_label_id(0);
                 multibox_loss_param->set_mining_type(mining_type);
+//                std::cout << "CHECK PARAMS: " << "conf_loss_type: " << conf_loss_type << ", share_location: " << share_location << ", match_type: " << match_type << ", use_prior_for_matching: " << use_prior << ", use_difficult_gt: " << use_difficult_gt << ", mining_type: " << mining_type << std::endl;
                 MultiBoxLossLayer<Dtype> layer(layer_param);
                 GradientChecker<Dtype> checker(1e-2, 1e-2, 1701);
                 checker.CheckGradientExhaustive(&layer, this->blob_bottom_vec_,
