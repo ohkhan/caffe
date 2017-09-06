@@ -310,7 +310,7 @@ class MultiBoxLossLayerTest : public MultiDeviceTest<TypeParam> {
     std::cout << "inside fill" << std::endl;
     for (int k = 0; k < 4; ++k) {
       for (int i = 0; i < 8; ++i) {
-        std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+        std::cout << k << "," << i <<"," <<8*k+i <<"," <<this->blob_bottom_gt_->cpu_data()[8*k+i] << std::endl;
       }
       std::cout << std::endl;
     }
@@ -379,7 +379,7 @@ TYPED_TEST(MultiBoxLossLayerTest, TestLocGradient) {
       std::cout << "before fill" << std::endl;
       for (int k = 0; k < 4; ++k) {
         for (int i = 0; i < 8; ++i) {
-          std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+          std::cout << k << "," << i <<"," <<8*k+i <<"," <<this->blob_bottom_gt_->cpu_data()[8*k+i] << std::endl;
         }
         std::cout << std::endl;
       }
@@ -387,7 +387,7 @@ TYPED_TEST(MultiBoxLossLayerTest, TestLocGradient) {
       std::cout << "after fill" << std::endl;
       for (int k = 0; k < 4; ++k) {
         for (int i = 0; i < 8; ++i) {
-          std::cout << this->blob_bottom_gt_->cpu_data()[8*k+i] << ' ';
+          std::cout << k << "," << i <<"," <<8*k+i <<"," <<this->blob_bottom_gt_->cpu_data()[8*k+i] << std::endl;
         }
         std::cout << std::endl;
       }
