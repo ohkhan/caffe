@@ -118,13 +118,19 @@ void BasePrefetchingDataLayer<Dtype>::Forward_cpu(
   prefetch_current_ = prefetch_full_.pop("Waiting for data");
   // Reshape to loaded data.
   top[0]->ReshapeLike(prefetch_current_->data_);
-  top[0]->set_cpu_data(prefetch_current_->data_.mutable_cpu_data());
+  // reverted back to copying instead of forwarding the pointer.
+  // for some reason this breaks the multibox loss layer test
+//  top[0]->set_cpu_data(prefetch_current_->data_.mutable_cpu_data());
+  caffe_copy(prefetch_current_->data_.count(), prefetch_current_->data_.cpu_data(),
+             top[0]->mutable_cpu_data());
   if (this->output_labels_) {
     // Reshape to loaded labels.
     top[1]->ReshapeLike(prefetch_current_->label_);
-    top[1]->set_cpu_data(prefetch_current_->label_.mutable_cpu_data());
-//    caffe_copy(count_, source.cpu_data(),
-//               static_cast<Dtype*>(data_->mutable_cpu_data()));
+    // reverted back to copying instead of forwarding the pointer.
+    // for some reason this breaks the multibox loss layer test
+//    top[1]->set_cpu_data(prefetch_current_->label_.mutable_cpu_data());
+    caffe_copy(prefetch_current_->label_.count(), prefetch_current_->label_.cpu_data(),
+               top[1]->mutable_cpu_data());
   }
 }
 
