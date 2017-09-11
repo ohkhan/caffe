@@ -37,7 +37,8 @@ class MultiDeviceTest : public ::testing::Test {
   virtual ~MultiDeviceTest() {}
 };
 
-typedef ::testing::Types<float, double> TestDtypes;
+//typedef ::testing::Types<float, double> TestDtypes;
+typedef ::testing::Types<double, float> TestDtypes;
 
 template <typename TypeParam>
 struct CPUDevice {
