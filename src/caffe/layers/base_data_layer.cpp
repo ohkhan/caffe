@@ -123,6 +123,8 @@ void BasePrefetchingDataLayer<Dtype>::Forward_cpu(
     // Reshape to loaded labels.
     top[1]->ReshapeLike(prefetch_current_->label_);
     top[1]->set_cpu_data(prefetch_current_->label_.mutable_cpu_data());
+//    caffe_copy(count_, source.cpu_data(),
+//               static_cast<Dtype*>(data_->mutable_cpu_data()));
   }
 }
 
