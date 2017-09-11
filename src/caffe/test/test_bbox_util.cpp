@@ -1652,7 +1652,6 @@ TYPED_TEST(GPUBBoxUtilTest, TestDecodeBBoxesCorner) {
   TypeParam* bbox_data = bboxes.mutable_gpu_data();
 
   bool variance_encoded_in_target = false;
-  std::cout << "nthreads " << num * 4 << " loc_data " << loc_data << " prior_data " << prior_data << " code_type " << code_type << " variance_encoded_in_target " << variance_encoded_in_target << " num_priors " << num << " share_location " <<  false << " num_loc_classes " << 1 << " background_label_id " << -1 << " clip_bbox " << false << " bbox_data " << bbox_data << std::endl;
   DecodeBBoxesGPU(num * 4, loc_data, prior_data, code_type,
                   variance_encoded_in_target, num, false, 1, -1, false,
                   bbox_data);
