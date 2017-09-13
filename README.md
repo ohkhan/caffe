@@ -1,4 +1,8 @@
-# SSD: Single Shot MultiBox Detector
+# SSD: Single Shot MultiBox Detector (Updated to support PASCAL GPUs)
+
+## Notes: 
+* This version does not support training with Dtype=double
+* Tested on Ubuntu 16.04 with the following GPU configurations: 1x Titan X, 4x Titan X, 4x Tesla P100
 
 [![Build Status](https://travis-ci.org/weiliu89/caffe.svg?branch=ssd)](https://travis-ci.org/weiliu89/caffe)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
