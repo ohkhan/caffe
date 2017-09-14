@@ -48,8 +48,8 @@ BLAS := open
 # Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
 # Leave commented to accept the defaults for your choice of BLAS
 # (which should work)!
-# BLAS_INCLUDE := /path/to/your/blas
-# BLAS_LIB := /path/to/your/blas
+BLAS_INCLUDE := /home/ubuntu/OpenBLAS-0.2.14
+BLAS_LIB := /home/ubuntu/OpenBLAS-0.2.14
 
 # Homebrew puts openblas in a directory that is not on the standard search path
 # BLAS_INCLUDE := $(shell brew --prefix openblas)/include
@@ -97,7 +97,7 @@ LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
 
 # NCCL acceleration switch (uncomment to build with NCCL)
 # https://github.com/NVIDIA/nccl (last tested version: v1.2.3-1+cuda8.0)
-USE_NCCL := 1
+# USE_NCCL := 1
 
 # Uncomment to use `pkg-config` to specify OpenCV library paths.
 # (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
